@@ -1,0 +1,20 @@
+{
+  "name": "assignment-4-country-borders",
+  "version": "1.0.0",
+  "description": "TypeScript console app to find adjacent countries by country code",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": ["typescript", "countries", "borders"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
+
