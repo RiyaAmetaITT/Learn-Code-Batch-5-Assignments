@@ -6,7 +6,7 @@ def isValidGuess(userInput):
     else:
         return False
 
-def main():
+def guessTheNumber():
     guessedNumber = random.randint(1, 100)
     isCorrectGuess = False
     userGuess = input("Guess a number between 1 and 100: ")
@@ -26,4 +26,4 @@ def main():
             print("You guessed it in", numberOfGuesses, "guesses!")
             isCorrectGuess = True
 
-main()
+guessTheNumber()

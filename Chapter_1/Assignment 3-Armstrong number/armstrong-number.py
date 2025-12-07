@@ -1,4 +1,4 @@
-def isArmstrongNumber(userInput):
+def calculateArmstrongSum(userInput):
     sumOfDigits = 0
     numberOfDigits = 0
 
@@ -16,7 +16,7 @@ def isArmstrongNumber(userInput):
 
 userInput = int(input("\nPlease Enter the Number to Check for Armstrong: "))
 
-if (userInput == isArmstrongNumber(userInput)):
+if (userInput == calculateArmstrongSum(userInput)):
     print("\n %d is Armstrong Number.\n" % userInput)
 else:
     print("\n %d is Not a Armstrong Number.\n" % userInput)

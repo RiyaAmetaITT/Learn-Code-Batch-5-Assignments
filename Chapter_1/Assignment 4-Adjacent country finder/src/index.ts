@@ -6,7 +6,7 @@ const readlineInterface = readline.createInterface({
   output: process.stdout
 });
 
-function main() {
+function findAdjacentCountries() {
   console.log('Enter a country code (e.g., IN, US, NZ)');
   console.log(`Supported country codes: ${getSupportedCountryCodes().join(', ')}\n`);
   
@@ -43,4 +43,4 @@ function main() {
   });
 }
 
-main();
+findAdjacentCountries();

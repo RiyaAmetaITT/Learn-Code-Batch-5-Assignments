@@ -4,7 +4,7 @@ def rollDice(sides):
     diceResult = random.randint(1, sides)
     return diceResult
 
-def main():
+def playDiceGame():
     sides = 6
     rollAgain = True
     while rollAgain:
