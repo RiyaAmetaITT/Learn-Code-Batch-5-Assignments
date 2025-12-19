@@ -1,0 +1,27 @@
+{
+  "name": "single-responsibility-principle",
+  "version": "1.0.0",
+  "description": "Demonstration of Single Responsibility Principle (SRP) from SOLID principles",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "SOLID",
+    "Single Responsibility Principle",
+    "SRP",
+    "TypeScript",
+    "Design Patterns"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}
+

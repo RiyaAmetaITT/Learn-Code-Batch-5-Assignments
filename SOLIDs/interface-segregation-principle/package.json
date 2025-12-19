@@ -1,0 +1,26 @@
+{
+  "name": "interface-segregation-principle",
+  "version": "1.0.0",
+  "description": "Demonstration of Interface Segregation Principle (ISP) from SOLID principles",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "SOLID",
+    "Interface Segregation Principle",
+    "ISP",
+    "TypeScript",
+    "Design Patterns"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}
