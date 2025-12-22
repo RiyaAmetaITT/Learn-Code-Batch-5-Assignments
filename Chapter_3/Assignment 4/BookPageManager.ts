@@ -1,7 +1,3 @@
-/**
- * BookPageManager - Handles reading state management
- * Single Responsibility: Managing page navigation and current page content
- */
 export class BookPageManager {
     private currentPageNumber: number = 0;
     private pages: string[] = [];

@@ -1,7 +1,3 @@
-/**
- * BookMetadata - Handles book information storage
- * Single Responsibility: Managing book metadata (title, author)
- */
 export class BookMetadata {
     private title: string;
     private author: string;

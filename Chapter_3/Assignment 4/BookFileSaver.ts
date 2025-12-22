@@ -1,18 +1,10 @@
 import { BookFileNameGenerator } from './BookFileNameGenerator';
 import { BookMetadata } from './BookMetadata';
 
-/**
- * FileSystem - Interface for file operations
- * Single Responsibility: Defining contract for file I/O operations
- */
 export interface FileSystem {
     writeFileSync(filename: string, data: string): void;
 }
 
-/**
- * BookFileSaver - Handles file persistence operations
- * Single Responsibility: File I/O and serialization
- */
 export class BookFileSaver {
     private fileNameGenerator: BookFileNameGenerator;
     private fileSystem: FileSystem;

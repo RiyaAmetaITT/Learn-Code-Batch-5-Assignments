@@ -1,7 +1,3 @@
-/**
- * BookLocation - Handles library location information
- * Single Responsibility: Managing physical location in library
- */
 export class BookLocation {
     private shelfNumber: string;
     private roomNumber: string;
