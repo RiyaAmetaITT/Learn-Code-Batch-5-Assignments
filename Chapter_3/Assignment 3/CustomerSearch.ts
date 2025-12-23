@@ -50,16 +50,21 @@ class CustomerSearch {
     }
 
     private getFieldValue(customer: Customer, field: SearchCriteria['field']): string {
+        let value: string;
         switch (field) {
             case 'Country':
-                return customer.Country;
+                value = customer.Country;
+                break;
             case 'CompanyName':
-                return customer.CompanyName;
+                value = customer.CompanyName;
+                break;
             case 'ContactName':
-                return customer.ContactName;
+                value = customer.ContactName;
+                break;
             default:
-                return '';
+                value = '';
         }
+        return value;
     }
 
     public exportToCSV(customers: Customer[]): string {

@@ -16,7 +16,7 @@ interface QueryIndices {
     rightIndex: number;
 }
 
-function readArraySizeAndQueryCount(inputLine: string): ArraySizeAndQueryCount {
+function parseInputDimensions(inputLine: string): ArraySizeAndQueryCount {
     const [arraySize, queryCount] = inputLine.split(' ').map(Number);
     return { arraySize, queryCount };
 }
@@ -77,7 +77,7 @@ async function main(): Promise<void> {
     };
 
     const firstLine = await readLine();
-    const { arraySize, queryCount } = readArraySizeAndQueryCount(firstLine);
+    const { arraySize, queryCount } = parseInputDimensions(firstLine);
 
     const arrayLine = await readLine();
     const arrayElements = readArrayElements(arrayLine, arraySize);
