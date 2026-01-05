@@ -1,0 +1,19 @@
+{
+  "name": "assignment-6-tumblr-api-client",
+  "version": "1.0.0",
+  "description": "Tumblr API v1 client to fetch blog information and image URLs",
+  "main": "main.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node main.ts"
+  },
+  "keywords": ["tumblr", "api", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
+
