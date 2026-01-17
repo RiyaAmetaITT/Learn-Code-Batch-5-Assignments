@@ -1,6 +1,4 @@
-# Good Comments Kept in Refactored Code
-
-## Good Comments Added
+Good Comments Added
 
 ### 1. **Explanation of Intent**
 ```csharp
