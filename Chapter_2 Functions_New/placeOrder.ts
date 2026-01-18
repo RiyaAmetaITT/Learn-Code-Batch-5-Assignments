@@ -1,3 +1,8 @@
+declare function print(message: string): void;
+
+const TAX_RATE = 0.18;
+const DISCOUNT_RATE = 0.1;
+
 function placeOrder(orderId, orderAmount) {
   if (isOrderInvalid(orderId, orderAmount)) {
     showInvalidOrderMessage();
@@ -22,11 +27,11 @@ function calculateFinalAmount(orderAmount) {
 }
 
 function calculateDiscount(amount) {
-  return amount * 0.1;
+  return amount * DISCOUNT_RATE;
 }
 
 function calculateTax(amount) {
-  return amount * 0.18;
+  return amount * TAX_RATE;
 }
 
 function showInvalidOrderMessage() {
