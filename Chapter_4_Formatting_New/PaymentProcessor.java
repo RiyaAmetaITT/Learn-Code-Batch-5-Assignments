@@ -5,6 +5,7 @@ import java.util.*;
 
 public class PaymentProcessor {
     private static final BigDecimal MIN_AMOUNT = new BigDecimal("0.01");
+    private static final BigDecimal MAX_AMOUNT = new BigDecimal("5000");
     private static final int MAX_RETRIES = 2;
     private static final String PAYMENT_SUCCESS = "Payment successful";
     private static final String PAYMENT_FAILED = "Payment failed";
@@ -19,15 +20,15 @@ public class PaymentProcessor {
         this.history = new HashMap<>();
     }
 
-    public PaymentResult process(PaymentRequest request) {
-        validate(request);
+    public PaymentResult processPayment(PaymentRequest request) {
+        validatePaymentRequest(request);
         int attempt = 0;
         while (attempt < MAX_RETRIES) {
             try {
-                execute(request);
-                record(request);
-                notifySuccess(request);
-                return new PaymentResult(true, PAYMENT_SUCCESS, generateId());
+                executePayment(request);
+                recordPayment(request);
+                notifyPaymentSuccess(request);
+                return new PaymentResult(true, PAYMENT_SUCCESS, generateTransactionId());
             } catch (PaymentException e) {
                 attempt++;
                 logger.log("Retry attempt: " + attempt);
@@ -36,7 +37,7 @@ public class PaymentProcessor {
         return new PaymentResult(false, PAYMENT_FAILED, null);
     }
 
-    private void validate(PaymentRequest request) {
+    private void validatePaymentRequest(PaymentRequest request) {
         if (request.customerId() == null 
         || request.customerId().isBlank()) {
             throw new IllegalArgumentException("Customer ID required");
@@ -47,23 +48,23 @@ public class PaymentProcessor {
         }
     }
 
-    private void execute(PaymentRequest request) {
+    private void executePayment(PaymentRequest request) {
         logger.log("Executing payment of " + request.amount());
-        if (request.amount().compareTo(new BigDecimal("5000")) > 0) {
+        if (request.amount().compareTo(MAX_AMOUNT) > 0) {
             throw new PaymentException("Limit exceeded");
         }
     }
 
-    private void record(PaymentRequest request) {
-        history.put(generateId(),
+    private void recordPayment(PaymentRequest request) {
+        history.put(generateTransactionId(),
                 new PaymentRecord(request.customerId(), request.amount(), LocalDateTime.now()));
     }
 
-    private String generateId() {
+    private String generateTransactionId() {
         return "TXN-" + System.currentTimeMillis();
     }
 
-    private void notifySuccess(PaymentRequest request) {
+    private void notifyPaymentSuccess(PaymentRequest request) {
         notifier.send(request.customerId(), "Payment of " + request.amount() + " processed");
     }
 }
