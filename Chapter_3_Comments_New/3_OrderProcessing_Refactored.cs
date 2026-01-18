@@ -1,17 +1,84 @@
+public class OrderValidator
+{
+    public bool IsOrderValid(Order order)
+    {
+        if (order == null)
+        {
+            return false;
+        }
+
+        return order.Items?.Count > 0 && order.TotalAmount > 0;
+    }
+}
+
+public class OrderRepository
+{
+    public async Task<Order> RetrieveOrderById(string orderId)
+    {
+        return await Task.FromResult(new Order());
+    }
+
+    public async Task PersistOrder(Order order)
+    {
+        await Task.CompletedTask;
+    }
+}
+
+public class ErrorHandler
+{
+    public void LogError(Exception exception)
+    {
+        Console.WriteLine($"Error: {exception.Message}");
+    }
+
+    public void HandleException(Exception exception)
+    {
+        LogError(exception);
+        throw;
+    }
+}
+
+public class OrderRecoveryService
+{
+    private readonly IInventoryService _inventoryService;
+
+    public OrderRecoveryService(IInventoryService inventoryService)
+    {
+        _inventoryService = inventoryService;
+    }
+
+    public async Task ReleaseReservedItems(Order order)
+    {
+        await _inventoryService.ReleaseReservation(order.Items);
+    }
+}
+
 public class OrderProcessor
 {
     private readonly IPaymentGateway _paymentGateway;
     private readonly IInventoryService _inventoryService;
     private readonly INotificationService _notificationService;
+    private readonly OrderValidator _orderValidator;
+    private readonly OrderRepository _orderRepository;
+    private readonly OrderRecoveryService _orderRecoveryService;
+    private readonly ErrorHandler _errorHandler;
 
     public OrderProcessor(
         IPaymentGateway paymentGateway,
         IInventoryService inventoryService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        OrderValidator orderValidator,
+        OrderRepository orderRepository,
+        OrderRecoveryService orderRecoveryService,
+        ErrorHandler errorHandler)
     {
         _paymentGateway = paymentGateway;
         _inventoryService = inventoryService;
         _notificationService = notificationService;
+        _orderValidator = orderValidator;
+        _orderRepository = orderRepository;
+        _orderRecoveryService = orderRecoveryService;
+        _errorHandler = errorHandler;
     }
 
     public async Task<OrderResult> ProcessOrder(Order order)
@@ -21,7 +88,7 @@ public class OrderProcessor
             throw new ArgumentNullException(nameof(order));
         }
 
-        if (!IsOrderValid(order))
+        if (!_orderValidator.IsOrderValid(order))
         {
             return OrderResult.Invalid("Order validation failed");
         }
@@ -49,26 +116,20 @@ public class OrderProcessor
             }
             else
             {
-                await _inventoryService.ReleaseReservation(order.Items);
+                await _orderRecoveryService.ReleaseReservedItems(order);
                 return OrderResult.Failed($"Payment failed: {paymentTransaction.ErrorMessage}");
             }
         }
         catch (Exception exception)
         {
-            await _inventoryService.ReleaseReservation(order.Items);
-            Console.WriteLine($"Error: {exception.Message}");
-            throw;
+            await _orderRecoveryService.ReleaseReservedItems(order);
+            _errorHandler.HandleException(exception);
         }
-    }
-
-    private bool IsOrderValid(Order order)
-    {
-        return order.Items?.Count > 0 && order.TotalAmount > 0;
     }
 
     public async Task CancelOrder(string orderId)
     {
-        var order = await RetrieveOrderById(orderId);
+        var order = await _orderRepository.RetrieveOrderById(orderId);
 
         if (order.Status == OrderStatus.Paid)
         {
@@ -77,16 +138,6 @@ public class OrderProcessor
         }
 
         order.Status = OrderStatus.Cancelled;
-        await PersistOrder(order);
-    }
-
-    private async Task<Order> RetrieveOrderById(string orderId)
-    {
-        return await Task.FromResult(new Order());
-    }
-
-    private async Task PersistOrder(Order order)
-    {
-        await Task.CompletedTask;
+        await _orderRepository.PersistOrder(order);
     }
 }
