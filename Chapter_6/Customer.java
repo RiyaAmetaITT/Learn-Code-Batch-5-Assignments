@@ -1,21 +1,33 @@
 public class Customer {
-    private String firstName;
-    private String lastName;
+    private String name;
     private Wallet wallet;
+    private WalletService walletService;
 
-    public String getFirstName() {
-        return firstName;
+    public Customer(String name, float initialBalance) {
+        this.name = name;
+        this.wallet = new Wallet(initialBalance);
+        this.walletService = new WalletService();
     }
 
-    public String getLastName() {
-        return lastName;
+    public Customer(String name, Wallet wallet, WalletService walletService) {
+        this.name = name;
+        this.wallet = wallet;
+        this.walletService = walletService;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public boolean makePayment(float amount) {
-        if (wallet != null && wallet.hasSufficientFunds(amount)) {
-            wallet.deduct(amount);
-            return true;
-        }
-        return false;
+        return walletService.deduct(wallet, amount);
+    }
+
+    public float getBalance() {
+        return wallet.getBalance();
+    }
+
+    public boolean addFunds(float amount) {
+        return walletService.addFunds(wallet, amount);
     }
 }
