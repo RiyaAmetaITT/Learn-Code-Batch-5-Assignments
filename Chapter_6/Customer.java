@@ -1,18 +1,10 @@
 public class Customer {
     private String name;
     private Wallet wallet;
-    private WalletService walletService;
 
-    public Customer(String name, float initialBalance) {
-        this.name = name;
-        this.wallet = new Wallet(initialBalance);
-        this.walletService = new WalletService();
-    }
-
-    public Customer(String name, Wallet wallet, WalletService walletService) {
+    public Customer(String name, Wallet wallet) {
         this.name = name;
         this.wallet = wallet;
-        this.walletService = walletService;
     }
 
     public String getName() {
@@ -20,14 +12,13 @@ public class Customer {
     }
 
     public boolean makePayment(float amount) {
-        return walletService.deduct(wallet, amount);
+        return wallet.deduct(amount);
     }
-
-    public float getBalance() {
-        return wallet.getBalance();
-    }
-
     public boolean addFunds(float amount) {
-        return walletService.addFunds(wallet, amount);
+        return wallet.addFunds(amount);
+    }
+
+    public String getBalanceInfo() {
+        return name + " has $" + wallet.getBalance();
     }
 }

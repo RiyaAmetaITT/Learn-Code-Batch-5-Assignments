@@ -1,34 +1,38 @@
 public class Main {
     public static void main(String[] args) {
-        Customer customer1 = new Customer("John Doe", 100.0f);
-        Customer customer2 = new Customer("Jane Smith", 50.0f);
-        Customer customer3 = new Customer("Bob Johnson", 20.0f);
+        ConsolePresenter presenter = new ConsolePresenter();
+        
+        Customer customer1 = new Customer("John Doe", new Wallet(100.0f));
+        Customer customer2 = new Customer("Jane Smith", new Wallet(50.0f));
+        Customer customer3 = new Customer("Bob Johnson", new Wallet(20.0f));
 
         Paperboy paperboy = new Paperboy("Tim");
 
-        System.out.println("=== Paperboy Payment Collection System ===\n");
+        presenter.displayHeader("=== Paperboy Payment Collection System ===\n");
 
-        System.out.println("Initial Balances:");
-        displayCustomerBalance(customer1);
-        displayCustomerBalance(customer2);
-        displayCustomerBalance(customer3);
-        System.out.println();
+        presenter.displaySection("Initial Balances:");
+        displayAllCustomerBalances(presenter, customer1, customer2, customer3);
+        presenter.displayNewLine();
 
         float newspaperCost = 30.0f;
-        System.out.println("Collecting payments of $" + newspaperCost + " from each customer:\n");
+        presenter.displayPaymentCollection(newspaperCost);
 
-        paperboy.collectPayment(customer1, newspaperCost);
-        paperboy.collectPayment(customer2, newspaperCost);
-        paperboy.collectPayment(customer3, newspaperCost);
+        PaymentResult result1 = paperboy.collectPayment(customer1, newspaperCost);
+        presenter.displayPaymentResult(result1);
+        
+        PaymentResult result2 = paperboy.collectPayment(customer2, newspaperCost);
+        presenter.displayPaymentResult(result2);
+        
+        PaymentResult result3 = paperboy.collectPayment(customer3, newspaperCost);
+        presenter.displayPaymentResult(result3);
 
-        System.out.println();
-        System.out.println("Final Balances:");
-        displayCustomerBalance(customer1);
-        displayCustomerBalance(customer2);
-        displayCustomerBalance(customer3);
+        presenter.displaySection("Final Balances:");
+        displayAllCustomerBalances(presenter, customer1, customer2, customer3);
     }
 
-    private static void displayCustomerBalance(Customer customer) {
-        System.out.println(customer.getName() + ": $" + customer.getBalance());
+    private static void displayAllCustomerBalances(ConsolePresenter presenter, Customer... customers) {
+        for (Customer customer : customers) {
+            presenter.displayCustomerBalance(customer);
+        }
     }
 }
