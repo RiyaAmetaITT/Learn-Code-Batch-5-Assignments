@@ -1,5 +1,9 @@
 import { Vehicle } from "./Vehicle";
-import { MIN_FUEL_LEVEL } from "../constants/vehicleConstants";
+import {
+  MAX_FUEL_TANK_PERCENT,
+  MIN_FUEL_LEVEL,
+} from "../constants/vehicleConstants";
+import type { VehicleStartResult } from "../types/VehicleStartResult";
 
 export abstract class FuelVehicle extends Vehicle {
   protected _fuelTankLevel: number;
@@ -10,10 +14,10 @@ export abstract class FuelVehicle extends Vehicle {
     modelName: string,
     manufacturingYear: number,
     listingPrice: number,
-    fuelTankLevel: number,
+    fuelTankLevelPercent: number,
   ) {
     super(manufacturerName, modelName, manufacturingYear, listingPrice);
-    this._fuelTankLevel = fuelTankLevel;
+    this._fuelTankLevel = this.validateFuelTankPercent(fuelTankLevelPercent);
   }
 
   get fuelTankLevel(): number {
@@ -24,23 +28,37 @@ export abstract class FuelVehicle extends Vehicle {
     return this._isEngineRunning;
   }
 
-  refuel(fuelAmount: number): void {
-    this._fuelTankLevel += fuelAmount;
-    console.log(`Refuelled. Fuel level: ${this._fuelTankLevel}%`);
+  refuel(fuelPercentPointsToAdd: number): void {
+    if (fuelPercentPointsToAdd < 0) {
+      throw new RangeError(
+        `Refuel amount cannot be negative (got ${fuelPercentPointsToAdd}).`,
+      );
+    }
+    this._fuelTankLevel = Math.min(
+      MAX_FUEL_TANK_PERCENT,
+      this._fuelTankLevel + fuelPercentPointsToAdd,
+    );
   }
 
-  start(): void {
+  start(): VehicleStartResult {
     const isFuelTankEmpty = this._fuelTankLevel <= MIN_FUEL_LEVEL;
     if (isFuelTankEmpty) {
-      console.log("Cannot start – no fuel!");
-      return;
+      return { success: false, reason: "no_fuel" };
     }
     this._isEngineRunning = true;
-    console.log(`${this.manufacturerName} ${this.modelName} started.`);
+    return { success: true };
   }
 
   stop(): void {
     this._isEngineRunning = false;
-    console.log(`${this.manufacturerName} ${this.modelName} stopped.`);
+  }
+
+  private validateFuelTankPercent(level: number): number {
+    if (level < MIN_FUEL_LEVEL || level > MAX_FUEL_TANK_PERCENT) {
+      throw new RangeError(
+        `Fuel tank level must be ${MIN_FUEL_LEVEL}–${MAX_FUEL_TANK_PERCENT} percent of tank (got ${level}).`,
+      );
+    }
+    return level;
   }
 }

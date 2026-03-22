@@ -1,4 +1,5 @@
 import { MAX_LISTING_PRICE } from "../constants/vehicleConstants";
+import type { VehicleStartResult } from "../types/VehicleStartResult";
 
 export abstract class Vehicle {
   private _manufacturerName: string;
@@ -15,7 +16,7 @@ export abstract class Vehicle {
     this._manufacturerName = manufacturerName;
     this._modelName = modelName;
     this._manufacturingYear = manufacturingYear;
-    this._listingPrice = this.ensureValidPrice(listingPrice);
+    this._listingPrice = this.validateListingPrice(listingPrice);
   }
 
   get manufacturerName(): string {
@@ -35,22 +36,19 @@ export abstract class Vehicle {
   }
 
   set listingPrice(newPrice: number) {
-    this._listingPrice = this.ensureValidPrice(newPrice);
+    this._listingPrice = this.validateListingPrice(newPrice);
   }
-  abstract start(): void;
+
+  abstract start(): VehicleStartResult;
   abstract stop(): void;
-  abstract displayInfo(): void;
 
-  protected ensureValidPrice(priceToValidate: number): number {
-    const isPriceNegative = priceToValidate < 0;
-    const exceedsMaximumAllowedPrice = priceToValidate > MAX_LISTING_PRICE;
-
-    if (isPriceNegative || exceedsMaximumAllowedPrice) {
-      console.warn(
-        `Invalid price $${priceToValidate} ignored. Price remains $${this._listingPrice ?? 0}.`,
+  private validateListingPrice(price: number): number {
+    const isInvalid = price < 0 || price > MAX_LISTING_PRICE;
+    if (isInvalid) {
+      throw new RangeError(
+        `Listing price must be between 0 and ${MAX_LISTING_PRICE} USD (got ${price}).`,
       );
-      return this._listingPrice ?? 0;
     }
-    return priceToValidate;
+    return price;
   }
 }

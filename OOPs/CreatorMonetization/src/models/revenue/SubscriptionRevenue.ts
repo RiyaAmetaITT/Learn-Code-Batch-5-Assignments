@@ -1,25 +1,24 @@
 import { CreatorAnalytics } from "../../interfaces/CreatorAnalytics";
 import { RevenueStream } from "../../interfaces/RevenueStream";
 import {
-  DEFAULT_SUBSCRIPTION_PRICE,
-  ENGAGEMENT_BONUS_FACTOR,
+  DEFAULT_MONTHLY_SUBSCRIPTION_USD_PER_SUBSCRIBER,
+  engagementRevenueMultiplier,
 } from "../../constants/revenueConstants";
 
 export class SubscriptionRevenue implements RevenueStream {
   readonly streamName = "Subscription";
-  private readonly pricePerSubscriber: number;
+  private readonly monthlyUsdPerSubscriber: number;
 
-  constructor(pricePerSubscriber: number = DEFAULT_SUBSCRIPTION_PRICE) {
-    this.pricePerSubscriber = pricePerSubscriber;
+  constructor(
+    monthlyUsdPerSubscriber: number = DEFAULT_MONTHLY_SUBSCRIPTION_USD_PER_SUBSCRIBER,
+  ) {
+    this.monthlyUsdPerSubscriber = monthlyUsdPerSubscriber;
   }
 
   calculateRevenue(analytics: CreatorAnalytics): number {
-    const engagementBonusMultiplier =
-      1 + analytics.engagementRate * ENGAGEMENT_BONUS_FACTOR;
+    const multiplier = engagementRevenueMultiplier(analytics.engagementRate);
     return (
-      analytics.activeSubscribers *
-      this.pricePerSubscriber *
-      engagementBonusMultiplier
+      analytics.activeSubscribers * this.monthlyUsdPerSubscriber * multiplier
     );
   }
 }

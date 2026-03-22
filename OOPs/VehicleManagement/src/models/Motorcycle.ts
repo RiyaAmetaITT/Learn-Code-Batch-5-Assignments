@@ -8,20 +8,20 @@ export class Motorcycle extends FuelVehicle {
     modelName: string,
     manufacturingYear: number,
     listingPrice: number,
-    fuelTankLevel: number,
+    fuelTankLevelPercent: number,
     hasSidecarAttached: boolean,
   ) {
-    super(manufacturerName, modelName, manufacturingYear, listingPrice, fuelTankLevel);
+    super(
+      manufacturerName,
+      modelName,
+      manufacturingYear,
+      listingPrice,
+      fuelTankLevelPercent,
+    );
     this._hasSidecarAttached = hasSidecarAttached;
   }
 
   get hasSidecarAttached(): boolean {
     return this._hasSidecarAttached;
-  }
-
-  displayInfo(): void {
-    console.log(
-      `Motorcycle: ${this.manufacturingYear} ${this.manufacturerName} ${this.modelName}, Sidecar: ${this._hasSidecarAttached}, Price: $${this.listingPrice}`,
-    );
   }
 }

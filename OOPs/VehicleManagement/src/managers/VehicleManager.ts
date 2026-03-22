@@ -1,25 +1,33 @@
 import { Vehicle } from "../abstract/Vehicle";
+import type { VehicleStartResult } from "../types/VehicleStartResult";
+
+export type VehicleStartOutcome = {
+  vehicle: Vehicle;
+  result: VehicleStartResult;
+};
 
 export class VehicleManager {
   private _registeredVehicles: Vehicle[] = [];
 
   addVehicle(vehicleToRegister: Vehicle): void {
     this._registeredVehicles.push(vehicleToRegister);
-    console.log(`${vehicleToRegister.constructor.name} added.`);
   }
 
-  startAllVehicles(): void {
-    this._registeredVehicles.forEach((registeredVehicle) => registeredVehicle.start());
+  get registeredVehicles(): readonly Vehicle[] {
+    return this._registeredVehicles;
   }
 
-  displayAllVehicles(): void {
-    console.log("\n=== Vehicles ===");
-    this._registeredVehicles.forEach((registeredVehicle) => registeredVehicle.displayInfo());
+  startAllVehicles(): VehicleStartOutcome[] {
+    return this._registeredVehicles.map((vehicle) => ({
+      vehicle,
+      result: vehicle.start(),
+    }));
   }
 
   calculateTotalFleetValue(): number {
     return this._registeredVehicles.reduce(
-      (accumulatedValue, registeredVehicle) => accumulatedValue + registeredVehicle.listingPrice,
+      (accumulatedValue, registeredVehicle) =>
+        accumulatedValue + registeredVehicle.listingPrice,
       0,
     );
   }

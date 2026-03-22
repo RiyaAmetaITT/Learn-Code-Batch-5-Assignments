@@ -6,12 +6,14 @@ export class Car extends FuelVehicle {
     modelName: string,
     manufacturingYear: number,
     listingPrice: number,
-    fuelTankLevel: number,
+    fuelTankLevelPercent: number,
   ) {
-    super(manufacturerName, modelName, manufacturingYear, listingPrice, fuelTankLevel);
-  }
-
-  displayInfo(): void {
-    console.log(`Car: ${this.manufacturingYear} ${this.manufacturerName} ${this.modelName}, Price: $${this.listingPrice}`);
+    super(
+      manufacturerName,
+      modelName,
+      manufacturingYear,
+      listingPrice,
+      fuelTankLevelPercent,
+    );
   }
 }
