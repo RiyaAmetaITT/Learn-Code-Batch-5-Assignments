@@ -1,7 +1,7 @@
 export type AppConfig = {
-    serviceName: string;
+  serviceName: string;
 };
 
 export function buildAppConfig(): AppConfig {
-    return { serviceName: "ai-orchestration" };
+  return { serviceName: "ai-orchestration" };
 }
