@@ -10,3 +10,4 @@ export class DeviceLockedException extends ATMException {
         return "Withdrawal Failed: The ATM device is currently locked.";
     }
 }
+

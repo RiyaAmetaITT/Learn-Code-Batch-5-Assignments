@@ -27,10 +27,12 @@ export class ATMDeviceController {
     }
 
     private processWithdrawal(accountId: string, amount: number): void {
-        const handle = this.deviceValidator.validateAndGetHandle();
+        this.deviceValidator.ensureDeviceReady();
+        const handle = this.deviceValidator.acquireDeviceHandle();
         
         this.accountValidator.ensureSufficientFunds(accountId, amount);
         
         this.cashDispenser.dispense(handle, amount);
     }
 }
+

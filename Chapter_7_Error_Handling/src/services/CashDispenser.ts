@@ -12,3 +12,4 @@ export class CashDispenser implements ICashDispenser {
         this.hardwareDispenser.dispenseCash(handle, amount);
     }
 }
+

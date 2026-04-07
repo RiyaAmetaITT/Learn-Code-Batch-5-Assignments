@@ -1,5 +1,5 @@
 import { DeviceHandle, DeviceRecord } from "../types/device";
-import { WIFI_CONNECTED } from "../constants/device.constants";
+import { WIFI_CONNECTED, DEFAULT_ACCOUNT_BALANCE } from "../constants/device.constants";
 import { IDeviceService, IAccountService, IHardwareDispenser } from "../interfaces";
 
 export class MockDeviceService implements IDeviceService {
@@ -17,7 +17,7 @@ export class MockDeviceService implements IDeviceService {
 
 export class MockAccountService implements IAccountService {
     public getBalance(accountId: string): number {
-        return 1000.0;
+        return DEFAULT_ACCOUNT_BALANCE;
     }
 }
 
@@ -26,3 +26,4 @@ export class MockHardwareDispenser implements IHardwareDispenser {
         console.log(`Dispensing $${amount}...`);
     }
 }
+

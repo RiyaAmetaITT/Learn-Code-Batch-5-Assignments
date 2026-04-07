@@ -7,3 +7,4 @@ export interface DeviceRecord {
     getStatus(): number;
     getWifiConnection(): number;
 }
+

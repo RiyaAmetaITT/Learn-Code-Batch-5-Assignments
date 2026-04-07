@@ -1,5 +1,5 @@
 import { DeviceHandle } from "../types/device";
-import { DEV1, WIFI_CONNECTED, DEVICE_SUSPENDED } from "../constants/device.constants";
+import { DEFAULT_DEVICE_ID, WIFI_CONNECTED, DEVICE_SUSPENDED } from "../constants/device.constants";
 import { DeviceLockedException } from "../exceptions/DeviceLockedException";
 import { NetworkConnectionException } from "../exceptions/NetworkConnectionException";
 import { IDeviceValidator, IDeviceService } from "../interfaces";
@@ -11,16 +11,19 @@ export class DeviceValidator implements IDeviceValidator {
         this.deviceService = deviceService;
     }
 
-    public validateAndGetHandle(): DeviceHandle {
-        const handle = this.deviceService.getHandle(DEV1);
-        if (handle === DeviceHandle.INVALID) {
-            throw new Error("Invalid Device Handle");
-        }
+    public ensureDeviceReady(): void {
+        const handle = this.acquireDeviceHandle();
 
         const record = this.deviceService.retrieveDeviceRecord(handle);
         this.checkSuspended(record.getStatus());
         this.checkNetwork(record.getWifiConnection());
+    }
 
+    public acquireDeviceHandle(): DeviceHandle {
+        const handle = this.deviceService.getHandle(DEFAULT_DEVICE_ID);
+        if (handle === DeviceHandle.INVALID) {
+            throw new Error("Invalid Device Handle");
+        }
         return handle;
     }
 
@@ -36,3 +39,4 @@ export class DeviceValidator implements IDeviceValidator {
         }
     }
 }
+

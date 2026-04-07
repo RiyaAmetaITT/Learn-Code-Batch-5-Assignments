@@ -10,3 +10,4 @@ export class InsufficientFundsException extends ATMException {
         return "Withdrawal Failed: Insufficient funds in the account.";
     }
 }
+

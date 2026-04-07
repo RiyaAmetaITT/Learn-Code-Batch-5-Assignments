@@ -10,3 +10,4 @@ export class NetworkConnectionException extends ATMException {
         return "Withdrawal Failed: No network connection to the server.";
     }
 }
+

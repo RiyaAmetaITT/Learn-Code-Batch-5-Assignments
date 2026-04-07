@@ -1,7 +1,8 @@
 import { DeviceHandle, DeviceRecord } from "../types/device";
 
 export interface IDeviceValidator {
-    validateAndGetHandle(): DeviceHandle;
+    ensureDeviceReady(): void;
+    acquireDeviceHandle(): DeviceHandle;
 }
 
 export interface IAccountValidator {
@@ -28,3 +29,4 @@ export interface IAccountService {
 export interface IHardwareDispenser {
     dispenseCash(handle: DeviceHandle, amount: number): void;
 }
+

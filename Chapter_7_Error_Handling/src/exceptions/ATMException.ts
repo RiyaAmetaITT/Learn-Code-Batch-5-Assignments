@@ -6,3 +6,4 @@ export abstract class ATMException extends Error {
 
     public abstract getLogMessage(): string;
 }
+
