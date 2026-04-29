@@ -1,0 +1,6 @@
+GIT SNAPSHOT - 
+A snapshot is the saved state of the entire project at a specific moment. When we take a snapshot of the project, git captures what every tracked file looks like at that time.
+
+Is commit a snapshot? -
+Yes, every commit is a snapshot of the tracked files in the project, along with some metadata such as the author, committer, and commit message.
+When we run git commit - Git takes a snapshot of all tracked files and stores it as a commit. This commit gets linked to the previous commit.
